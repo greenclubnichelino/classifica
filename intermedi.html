@@ -197,50 +197,59 @@
     </table>
     <a href="index.html" class="btn">Torna Indietro</a>
     <script>
-        const apiURL = 'https://script.google.com/macros/s/AKfycbzE-CdTUIQgKCfXS2M0bh3NCN2gf9YiMke0WnS7Hg8BPTyIxVi-aRv2TXQhDeUv1x1lYw/exec?sheet=INTERMEDI';
+        const apiURL = 'https://script.google.com/macros/s/AKfycbx8koxcR_bsdF4FWSTqLvI6465cpMvHJrOgsk44DS8R735iqFDtEXnHxfLNGleBFY-UJQ/exec?sheet=INTERMEDI';
 
-        async function caricaClassifica() {
-            try {
-                const response = await fetch(apiURL);
-                if (!response.ok) throw new Error(`Errore HTTP! Stato: ${response.status}`);
-                const data = await response.json();
+async function caricaClassifica() {
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) throw new Error(`Errore HTTP! Stato: ${response.status}`);
+        const data = await response.json();
 
-                const classifica = data.INTERMEDI || data.intermedi;
-                if (!classifica) throw new Error('La proprietà INTERMEDI non è presente nei dati restituiti.');
-
-                classifica.sort((a, b) => b.punti - a.punti);
-
-                const tbody = document.getElementById('classifica-body');
-                tbody.innerHTML = '';
-                classifica.forEach((giocatore, index) => {
-                    let rowClass = '';
-                    let posizione = index + 1;
-
-                    if (index === 0) {
-                        rowClass = 'gold';
-                        posizione = '<span class="medal">🥇</span>';
-                    } else if (index === 1) {
-                        rowClass = 'silver';
-                        posizione = '<span class="medal">🥈</span>';
-                    } else if (index === 2) {
-                        rowClass = 'bronze';
-                        posizione = '<span class="medal">🥉</span>';
-                    }
-
-                    const rowHTML = `<tr class="${rowClass}">
-                        <td>${posizione}</td>
-                        <td>${giocatore.nome}</td>
-                        <td>${giocatore.punti}</td>
-                    </tr>`;
-                    tbody.innerHTML += rowHTML;
-                });
-            } catch (error) {
-                console.error('Errore durante il caricamento della classifica:', error);
-                alert('Impossibile caricare la classifica. Riprova più tardi.');
-            }
+        // Controlla se i dati sono un array (non c'è una proprietà "INTERMEDI")
+        if (!Array.isArray(data)) {
+            throw new Error('I dati restituiti non sono validi.');
         }
 
-        caricaClassifica();
+        // Ordina la classifica in base ai punti (decrescente)
+        data.sort((a, b) => b.PUNTI - a.PUNTI);
+
+        // Seleziona il corpo della tabella
+        const tbody = document.getElementById('classifica-body');
+        tbody.innerHTML = ''; // Pulisci la tabella esistente
+
+        // Aggiungi i dati alla tabella
+        data.forEach((giocatore, index) => {
+            let rowClass = '';
+            let posizione = index + 1;
+
+            // Assegna medaglie alle prime 3 posizioni
+            if (index === 0) {
+                rowClass = 'gold';
+                posizione = '<span class="medal">🥇</span>';
+            } else if (index === 1) {
+                rowClass = 'silver';
+                posizione = '<span class="medal">🥈</span>';
+            } else if (index === 2) {
+                rowClass = 'bronze';
+                posizione = '<span class="medal">🥉</span>';
+            }
+
+            // Crea una nuova riga nella tabella
+            const rowHTML = `<tr class="${rowClass}">
+                <td>${posizione}</td>
+                <td>${giocatore.NOME}</td>
+                <td>${giocatore.PUNTI}</td>
+            </tr>`;
+            tbody.innerHTML += rowHTML;
+        });
+    } catch (error) {
+        console.error('Errore durante il caricamento della classifica:', error);
+        alert('Impossibile caricare la classifica. Riprova più tardi.');
+    }
+}
+
+caricaClassifica();
+
     </script>
 </body>
 </html>
