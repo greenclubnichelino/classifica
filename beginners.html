@@ -205,17 +205,24 @@
                 if (!response.ok) throw new Error(`Errore HTTP! Stato: ${response.status}`);
                 const data = await response.json();
 
-                const classifica = data.BEGINNERS || data.beginners; 
-                if (!classifica) throw new Error('La proprietà BEGINNERS non è presente nei dati restituiti.');
+                // Controlla se i dati sono un array (non c'è una proprietà "BEGINNERS")
+                if (!Array.isArray(data)) {
+                    throw new Error('I dati restituiti non sono validi.');
+                }
 
-                classifica.sort((a, b) => b.punti - a.punti);
+                // Ordina la classifica in base ai punti (decrescente)
+                data.sort((a, b) => b.PUNTI - a.PUNTI);
 
+                // Seleziona il corpo della tabella
                 const tbody = document.getElementById('classifica-body');
-                tbody.innerHTML = '';
-                classifica.forEach((giocatore, index) => {
+                tbody.innerHTML = ''; // Pulisci la tabella esistente
+
+                // Aggiungi i dati alla tabella
+                data.forEach((giocatore, index) => {
                     let rowClass = '';
                     let posizione = index + 1;
 
+                    // Assegna medaglie alle prime 3 posizioni
                     if (index === 0) {
                         rowClass = 'gold';
                         posizione = '<span class="medal">🥇</span>';
@@ -227,10 +234,11 @@
                         posizione = '<span class="medal">🥉</span>';
                     }
 
+                    // Crea una nuova riga nella tabella
                     const rowHTML = `<tr class="${rowClass}">
                         <td>${posizione}</td>
-                        <td>${giocatore.nome}</td>
-                        <td>${giocatore.punti}</td>
+                        <td>${giocatore.NOME}</td>
+                        <td>${giocatore.PUNTI}</td>
                     </tr>`;
                     tbody.innerHTML += rowHTML;
                 });
