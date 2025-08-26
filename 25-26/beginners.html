@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifica Beginners</title>
+    <style>
+        /* Resetting margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001275, rgb(64, 140, 255));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            animation: slideIn 1s ease-out;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        th {
+            background-color: rgb(0, 76, 190);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        td {
+            background-color: #f4f4f9;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #e9f1f7;
+        }
+
+        tr:hover td {
+            background-color: rgb(92, 163, 255);
+            color: white;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Highlight colors for top 3 */
+        tr.gold:hover td {
+            background-color: rgb(216, 188, 116);
+            color: black;
+        }
+
+        tr.silver:hover td {
+            background-color: rgb(183, 183, 183);
+            color: black;
+        }
+
+        tr.bronze:hover td {
+            background-color: rgb(200, 150, 112);
+            color: black;
+        }
+
+        .medal {
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            margin: 10px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #000d57, rgb(0, 76, 190));
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #58ecff, rgb(92, 163, 255));
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+            animation: hoverGlow 1s ease-in-out infinite;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes hoverGlow {
+            0% { box-shadow: 0 0 5px #1100ff, 0 0 10px #1100ff, 0 0 15px #1100ff; }
+            50% { box-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #ffffff; }
+            100% { box-shadow: 0 0 5px #1100ff, 0 0 10px #1100ff, 0 0 15px #1100ff; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            table { width: 100%; }
+            th, td { font-size: 1rem; }
+            h1 { font-size: 2.5rem; }
+            .btn { font-size: 1rem; padding: 12px 25px; }
+        }
+
+        @media (max-width: 480px) {
+            table { width: 100%; }
+            th, td { font-size: 0.9rem; padding: 10px; }
+            h1 { font-size: 2rem; }
+            .btn { font-size: 0.9rem; padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Classifica Green Club Beginners 2025/26</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Posizione</th>
+                <th>Nome</th>
+                <th>Punti</th>
+                <th>Tornei</th> <!-- aggiunta colonna -->
+            </tr>
+        </thead>
+        <tbody id="classifica-body">
+            <!-- Le righe della classifica verranno aggiunte dinamicamente -->
+        </tbody>
+    </table>
+    <a href="index.html" class="btn">Torna Indietro</a>
+
+    <script>
+        const apiURL = 'https://script.google.com/macros/s/AKfycbwU3PmRkbAUJkCRLUiOdgOJ9M-rcuvvoZuHoa9I2AdP_me3H_qdrdYyHugB1BKvKJEI/exec?sheet=BEGINNERS';
+        
+        async function caricaClassifica() {
+            try {
+                const response = await fetch(apiURL);
+                if (!response.ok) throw new Error(`Errore HTTP! Stato: ${response.status}`);
+                const data = await response.json();
+
+                if (!Array.isArray(data)) {
+                    throw new Error('I dati restituiti non sono validi.');
+                }
+
+                // Ordina per punti decrescenti
+                data.sort((a, b) => b.PUNTI - a.PUNTI);
+
+                const tbody = document.getElementById('classifica-body');
+                tbody.innerHTML = '';
+
+                data.forEach((giocatore, index) => {
+                    let rowClass = '';
+                    let posizione = index + 1;
+
+                    if (index === 0) {
+                        rowClass = 'gold';
+                        posizione = '<span class="medal">🥇</span>';
+                    } else if (index === 1) {
+                        rowClass = 'silver';
+                        posizione = '<span class="medal">🥈</span>';
+                    } else if (index === 2) {
+                        rowClass = 'bronze';
+                        posizione = '<span class="medal">🥉</span>';
+                    }
+
+                    const rowHTML = `<tr class="${rowClass}">
+                        <td>${posizione}</td>
+                        <td>${giocatore.NOME}</td>
+                        <td>${giocatore.PUNTI}</td>
+                        <td>${giocatore.TORNEI}</td> <!-- colonna Tornei -->
+                    </tr>`;
+                    tbody.innerHTML += rowHTML;
+                });
+            } catch (error) {
+                console.error('Errore durante il caricamento della classifica:', error);
+                alert('Impossibile caricare la classifica. Riprova più tardi.');
+            }
+        }
+
+        caricaClassifica();
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifiche Padel</title>
+    <style>
+        /* Resetting margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Basic styling */
+        body {
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001275, rgb(64, 140, 255));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 3rem; /* Original size */
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h2 {
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem; /* Original size */
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Button container */
+        .button-container {
+            margin-top: 20px;
+            display: flex; /* Flexbox to align buttons on the same line */
+            gap: 15px; /* Space between buttons */
+        }
+
+        /* Style for buttons */
+        .btn {
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 12px 25px;
+            font-size: 1.2rem; /* Original size */
+            margin: 10px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #000d57, rgb(0, 76, 190));
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        /* Hover effect */
+        .btn:hover {
+            background: linear-gradient(135deg, #58ecff, rgb(92, 163, 255));
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+            animation: hoverGlow 1s ease-in-out infinite;
+        }
+
+        /* Active effect */
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Focus effect */
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 5px #58ecff, 0 0 15px #58ecff;
+        }
+
+        /* Animation: Fade in effect */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Animation: Glow effect on hover */
+        @keyframes hoverGlow {
+            0% { box-shadow: 0 0 5px #1100ff, 0 0 10px #1100ff, 0 0 15px #1100ff; }
+            50% { box-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #ffffff; }
+            100% { box-shadow: 0 0 5px #1100ff, 0 0 10px #1100ff, 0 0 15px #1100ff; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem; /* Slightly smaller on tablets */
+            }
+
+            h2 {
+                font-size: 1.5rem; /* Slightly smaller on tablets */
+            }
+
+            .btn {
+                font-size: 1rem; /* Adjusted for tablets */
+                padding: 12px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem; /* Slightly smaller on smartphones */
+            }
+
+            h2 {
+                font-size: 1.2rem; /* Slightly smaller on smartphones */
+            }
+
+            .btn {
+                font-size: 0.9rem; /* Slightly smaller on smartphones */
+                padding: 10px 20px;
+            }
+
+            .button-container {
+                margin-top: 15px;
+                flex-wrap: wrap; /* Wrap buttons if there is no space */
+                justify-content: center; /* Center buttons */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CLASSIFICA GENERALE TORNEI PADEL</h1>
+    <h1>2024-25</h1>
+    <h2>Green Club</h2>
+    <br>
+
+    <div class="button-container">
+        <!-- Pulsanti per navigare tra le classifiche -->
+        <a href="beginners.html" class="btn">Classifica Beginners</a>
+        <a href="intermedi.html" class="btn">Classifica Intermedi</a>
+    </div>
+
+    <a href="../index.html" class="btn">Cambia Stagione</a>
+
+    <script>
+        // Funzione che aggiunge un effetto "shake" quando il pulsante viene cliccato
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.animation = 'shake 0.5s ease';
+                setTimeout(() => {
+                    this.style.animation = ''; // Resetting animation
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
